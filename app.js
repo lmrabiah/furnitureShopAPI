@@ -2,28 +2,31 @@ const express = require("express");
 const db = require("./db/models");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const path = require("path");
 //shortcut p1
 const productRoutes = require("./routes/products");
 const app = express();
 //middlewere
-
+console.log("__dirname ", __dirname);
 app.use(cors());
 app.use(bodyParser.json());
-//shortcut p2
+
+//Routes
 app.use("/products", productRoutes);
+app.use("/media", express.static(path.join(__dirname, "media")));
 
 // if i put wrong url ex: localhost:8000/productss
 app.use((req, res, next) => {
   console.log("Path dosn't exist");
-  res.status(404).json({ massage: "Path not found" });
+  res.status(404).json({ message: "Path not found" });
 });
 
 //all errors (error handle middle ware)
-// app.use((err, req, res, next) => {
-//   console.log(err);
-//   res.status(err.status ?? 500);
-//   res.jason({ massage: err.massage ?? "internal server error" });
-// });
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(err.status ?? 500);
+  res.json({ message: err.message ?? "internal server error" });
+});
 
 ////Route
 const run = async () => {

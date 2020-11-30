@@ -1,56 +1,49 @@
 const { Product } = require("../db/models");
 
-/////
-
-//fetch
-
-exports.deletProduct = async (req, res) => {
-  const { productId } = req.params;
+//normal func noit mw
+exports.fetchProduct = async (productId, next) => {
   try {
     const foundProduct = await Product.findByPk(productId);
-    if (foundProduct) {
-      await foundProduct.destroy();
-      res.status(204).end();
-    } else {
-      res.status(404).json({ massage: "product not found" });
-    }
+    return foundProduct;
   } catch (error) {
-    res.status(500).json({ massage: error.massage });
+    next(error);
   }
 };
 
-exports.updateProduct = async (req, res) => {
-  // const productId = req.params.productId;
-  const { productId } = req.params;
+exports.deletProduct = async (req, res, next) => {
   try {
-    const foundProduct = await Product.findByPk(productId);
-    if (foundProduct) {
-      await foundProduct.update(req.body);
-      res.status(204).end();
-    } else {
-      res.status(404).json({ massage: "product not found" });
-    }
+    await req.product.destroy();
+    res.status(204).end();
   } catch (error) {
-    res.status(500).json({ massage: error.massage });
+    next(error);
   }
 };
 
-exports.creatProduct = async (req, res) => {
+exports.updateProduct = async (req, res, next) => {
+  try {
+    await req.product.update(req.body);
+    res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.creatProduct = async (req, res, next) => {
   try {
     const newProduct = await Product.create(req.body);
     res.status(201).json(newProduct);
   } catch (error) {
-    res.status(500).json({ massage: error.massage });
+    next(error);
   }
 };
 
-exports.productList = async (req, res) => {
+exports.productList = async (req, res, next) => {
   try {
     const products = await Product.findAll({
       attributes: { exclude: ["createdAt", "updatedAt"] },
     });
     res.json(products);
   } catch (error) {
-    res.status(500).json({ massage: error.massage });
+    next(error);
   }
 };

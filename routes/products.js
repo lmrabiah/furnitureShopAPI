@@ -5,7 +5,12 @@ const {
   creatProduct,
   productList,
   updateProduct,
+  // fetchProduct,
 } = require("../controllers/productController");
+
+// router.param("productId",(req, res, next, productId)) =>{
+
+// }
 
 router.delete("/:productId", deletProduct);
 

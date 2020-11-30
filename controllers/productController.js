@@ -1,40 +1,56 @@
-let products = require("../products");
-const slugify = require("slugify");
+const { Product } = require("../db/models");
 
-exports.deletProduct = (req, res) => {
-  // const {productId} = req.params;
-  //the same to line 18
-  const productId = req.params.productId;
-  const foundProduct = products.find((product) => product.id === +productId);
-  if (foundProduct) {
-    products = products.filter((product) => product.id !== +productId);
-    res.status(204).end();
-    // equal to
-    //res.status(204);
-    //res.end()   bcz startuse will not end it and  res.end will
-  } else {
-    res.status(404).json({ massage: "product not found" });
+/////
+
+//fetch
+
+exports.deletProduct = async (req, res) => {
+  const { productId } = req.params;
+  try {
+    const foundProduct = await Product.findByPk(productId);
+    if (foundProduct) {
+      await foundProduct.destroy();
+      res.status(204).end();
+    } else {
+      res.status(404).json({ massage: "product not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ massage: error.massage });
   }
 };
-exports.creatProduct = (req, res) => {
-  const id = products[products.length - 1].id + 1;
-  const slug = slugify(req.body.name, { lower: true });
-  const newProduct = { id, slug, ...req.body }; // id, slug are equivalent to id: id, slug: slug
-  products.push(newProduct);
-  res.json(newProduct);
-};
-exports.productList = (req, res) => {
-  res.json(products);
+
+exports.updateProduct = async (req, res) => {
+  // const productId = req.params.productId;
+  const { productId } = req.params;
+  try {
+    const foundProduct = await Product.findByPk(productId);
+    if (foundProduct) {
+      await foundProduct.update(req.body);
+      res.status(204).end();
+    } else {
+      res.status(404).json({ massage: "product not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ massage: error.massage });
+  }
 };
 
-exports.updateProduct = (req, res) => {
-  const productId = req.params.productId;
-  const foundProduct = products.find((product) => product.id === +productId);
-  if (foundProduct) {
-    for (const key in req.body) foundProduct[key] = req.body[key];
-    foundProduct.slug = slugify(req.body.name, { lower: true });
-    res.status(204).end();
-  } else {
-    res.status(404).json({ massage: "product not found" });
+exports.creatProduct = async (req, res) => {
+  try {
+    const newProduct = await Product.create(req.body);
+    res.status(201).json(newProduct);
+  } catch (error) {
+    res.status(500).json({ massage: error.massage });
+  }
+};
+
+exports.productList = async (req, res) => {
+  try {
+    const products = await Product.findAll({
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+    });
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ massage: error.massage });
   }
 };

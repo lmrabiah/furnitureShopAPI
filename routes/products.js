@@ -3,7 +3,6 @@ const upload = require("../middleware/multer");
 const router = express.Router();
 const {
   deletProduct,
-  creatProduct,
   productList,
   updateProduct,
   fetchProduct,
@@ -27,8 +26,6 @@ router.delete("/:productId", deletProduct);
 
 router.get("/", productList);
 
-router.put("/", upload.single("img"), creatProduct);
-
-router.post("/:productId", upload.single("img"), updateProduct);
+router.put("/:productId", upload.single("img"), updateProduct);
 
 module.exports = router;

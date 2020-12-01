@@ -3,9 +3,11 @@ const db = require("./db/models");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
+
 //shortcut p1
 const productRoutes = require("./routes/products");
 const app = express();
+
 //middlewere
 console.log("__dirname ", __dirname);
 app.use(cors());

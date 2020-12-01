@@ -27,8 +27,8 @@ router.delete("/:productId", deletProduct);
 
 router.get("/", productList);
 
-router.post("/", upload.single("img"), creatProduct);
+router.put("/", upload.single("img"), creatProduct);
 
-router.put("/:productId", upload.single("img"), updateProduct);
+router.post("/:productId", upload.single("img"), updateProduct);
 
 module.exports = router;

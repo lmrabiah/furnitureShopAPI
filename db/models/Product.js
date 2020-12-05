@@ -6,6 +6,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    shop: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     slug: {
       type: DataTypes.STRING,
       unique: true,

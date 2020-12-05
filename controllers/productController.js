@@ -39,7 +39,7 @@ exports.productList = async (req, res, next) => {
         {
           model: Store,
           as: "stores",
-          attributes: ["name"],
+          attributes: ["id"],
         },
       ],
     });

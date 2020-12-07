@@ -7,6 +7,7 @@ const path = require("path");
 //shortcut p1
 const productRoutes = require("./routes/products");
 const storeRoutes = require("./routes/stores");
+const userRoutes = require("./routes/users");
 const app = express();
 
 //middlewere
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 //Routes
 app.use("/stores", storeRoutes);
 app.use("/products", productRoutes);
+app.use(userRoutes);
 app.use("/media", express.static(path.join(__dirname, "media")));
 
 // if i put wrong url ex: localhost:8000/productss

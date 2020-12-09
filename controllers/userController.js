@@ -14,3 +14,7 @@ exports.signup = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.signin = (req, res) => {
+  res.json({ massage: "congrats u are sign in" });
+};

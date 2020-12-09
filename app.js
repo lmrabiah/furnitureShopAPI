@@ -1,9 +1,10 @@
 const express = require("express");
 const db = require("./db/models");
+const { localStrategy } = require("./middleware/passport");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
-
+const passport = require("passport");
 //shortcut p1
 const productRoutes = require("./routes/products");
 const storeRoutes = require("./routes/stores");
@@ -14,7 +15,11 @@ const app = express();
 console.log("__dirname ", __dirname);
 app.use(cors());
 app.use(bodyParser.json());
+//to use the table
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(passport.initialize());
 
+passport.use(localStrategy);
 //Routes
 app.use("/stores", storeRoutes);
 app.use("/products", productRoutes);

@@ -1,6 +1,6 @@
 const express = require("express");
 const db = require("./db/models");
-const { localStrategy } = require("./middleware/passport");
+const { localStrategy, jwtStrategy } = require("./middleware/passport");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -18,8 +18,9 @@ app.use(bodyParser.json());
 //to use the table
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
-
 passport.use(localStrategy);
+passport.use(jwtStrategy);
+
 //Routes
 app.use("/stores", storeRoutes);
 app.use("/products", productRoutes);

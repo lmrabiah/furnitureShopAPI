@@ -33,6 +33,7 @@ exports.storeList = async (req, res, next) => {
 };
 
 exports.creatProduct = async (req, res, next) => {
+  console.log(req.user);
   try {
     if (req.file) {
       req.body.img = `http://${req.get("host")}/media/${req.file.filename}`;

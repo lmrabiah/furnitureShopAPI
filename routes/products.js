@@ -7,6 +7,7 @@ const {
   updateProduct,
   fetchProduct,
 } = require("../controllers/productController");
+const passport = require("passport");
 
 router.param("productId", async (req, res, next, productId) => {
   const product = await fetchProduct(productId, next);
@@ -22,10 +23,19 @@ router.param("productId", async (req, res, next, productId) => {
   }
 });
 
-router.delete("/:productId", deletProduct);
+router.delete(
+  "/:productId",
+  passport.authenticate("jwt", { session: false }),
+  deletProduct
+);
 
 router.get("/", productList);
 
-router.put("/:productId", upload.single("img"), updateProduct);
+router.put(
+  "/:productId",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("img"),
+  updateProduct
+);
 
 module.exports = router;

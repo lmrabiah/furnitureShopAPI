@@ -55,4 +55,11 @@ db.Product.belongsTo(db.Store, {
   foreignKey: { fieldName: "StoreId" },
 });
 ////
+db.User.hasOne(db.Store, {
+  as: "store",
+  foreignKey: "userId",
+});
+
+db.Store.belongsTo(db.User, { as: "user" });
+////
 module.exports = db;

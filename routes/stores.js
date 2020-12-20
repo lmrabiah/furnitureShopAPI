@@ -8,6 +8,19 @@ const {
 } = require("../controllers/storeController.js");
 const passport = require("passport");
 
+router.param("storeId", async (req, res, next, storeId) => {
+  const store = await fetchStore(storeId, next);
+  if (store) {
+    req.store = store;
+    next();
+  } else {
+    const err = {
+      status: 404,
+      message: "store not found",
+    };
+    next(err);
+  }
+});
 router.get("/", storeList);
 
 router.post(
@@ -20,7 +33,7 @@ router.post(
 
 router.post(
   "/:storeId/products",
-  //i can add product if i don't have token
+  //i can add store if i don't have token
   passport.authenticate("jwt", { session: false }),
   //
   upload.single("img"),

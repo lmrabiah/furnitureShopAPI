@@ -8,6 +8,7 @@ const passport = require("passport");
 //shortcut p1
 const productRoutes = require("./routes/products");
 const storeRoutes = require("./routes/stores");
+const orderRoutes = require("./routes/orders");
 const userRoutes = require("./routes/users");
 const app = express();
 
@@ -18,12 +19,14 @@ app.use(bodyParser.json());
 //to use the table
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
+
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
 //Routes
 app.use("/stores", storeRoutes);
 app.use("/products", productRoutes);
+app.use(orderRoutes);
 app.use(userRoutes);
 app.use("/media", express.static(path.join(__dirname, "media")));
 
